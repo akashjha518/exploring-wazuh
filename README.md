@@ -1,72 +1,76 @@
 # TryHackMe — Exploring Wazuh
 
-Hands-on documentation for the TryHackMe room **Exploring Wazuh**.
+Hands-on documentation for the TryHackMe **Exploring Wazuh** room.
 
-- **Platform:** TryHackMe
-- **Room:** Exploring Wazuh
-- **Focus:** Wazuh SIEM/XDR capabilities, agent inventory, configuration assessment, vulnerability visibility, and dashboard analysis
-- **Documented lab progress:** 42% at the time of capture
-- **Evidence:** `evidence/`
+**Room:** https://tryhackme.com/room/exploringwazuh
 
-## 1. Lab Objective
+> This repository documents the work evidenced by the supplied screenshots. The screenshots are retained in full under `evidence/` and are referenced individually below.
 
-The lab introduces Wazuh as an open-source security platform and provides practical exposure to:
+---
 
-- Wazuh agents and agent status
-- Security Configuration Assessment (SCA)
-- CIS benchmark results
-- IT Hygiene / software inventory
-- Vulnerability Detection
-- Security monitoring dashboards
-- Endpoint security visibility
+## 1. Lab Overview
 
-The goal of this documentation is to record the work completed in the lab with screenshots and concise technical notes.
+The **Exploring Wazuh** room introduces Wazuh as an open-source security platform and provides practical exposure to endpoint monitoring, agent management, vulnerability visibility, configuration assessment, IT hygiene, security alerts, compliance, and the Wazuh dashboard.
 
-## 2. Lab Environment
+Wazuh follows a manager/agent architecture: monitored endpoints run Wazuh agents, while the central Wazuh components collect and process security data. The official Wazuh documentation describes the platform as providing unified XDR and SIEM capabilities across endpoints and cloud workloads.
 
-The supplied TryHackMe environment contains Wazuh dashboard access and two monitored endpoints:
+## 2. Lab Progress
 
-| Endpoint | Observed details |
-|---|---|
-| Linux agent | Ubuntu Linux 24.04 LTS CIS benchmark |
-| Windows agent | Microsoft Windows Server 2019 Datacenter |
-| Windows agent ID | `002` |
-| Windows agent IP | `10.82.99.206` |
-| Wazuh version observed | `v4.14.3` |
-| Windows CPU | `AMD EPYC 7571` |
-| Windows memory | `4 GB` |
-| Windows cores | `2` |
+At the time of the supplied capture, the TryHackMe room displayed:
 
-> The values above are taken from the supplied lab screenshots and describe the lab environment at capture time.
+**Room progress: 42%**
 
-## 3. Key Lab Findings
+![TryHackMe room progress — 42%](evidence/08-tryhackme-room-progress-42-percent.png)
 
-### 3.1 Linux — Security Configuration Assessment
+---
 
-The Linux agent was opened in **Configuration Assessment**.
+# 3. Evidence and Observations
 
-Observed CIS benchmark:
+## Evidence 01 — Linux CIS Security Configuration Assessment
+
+**File:** `evidence/01-wazuh-linux-sca-46-percent.png`
+
+![Linux CIS benchmark](evidence/01-wazuh-linux-sca-46-percent.png)
+
+### Observed
+
+The Linux endpoint was opened in Wazuh's **Configuration Assessment** area.
+
+Policy:
 
 **CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0**
 
-Results:
+Results shown:
 
-- Passed: **110**
-- Failed: **127**
-- Not applicable: **42**
-- Score: **46%**
-- Total checks: **279**
-- Scan date shown: **March 10, 2026**
+| Metric | Result |
+|---|---:|
+| Passed | 110 |
+| Failed | 127 |
+| Not applicable | 42 |
+| Total checks | 279 |
+| Score | **46%** |
 
-The dashboard also showed individual SCA checks, including kernel-module hardening checks. Several checks passed while at least one unused-filesystem check was shown as failed.
+The screenshot also shows individual benchmark checks, including checks for kernel modules and unused filesystems.
 
-**Learning point:** SCA compares endpoint configuration against predefined security policies and benchmarks. Wazuh provides built-in policies based largely on CIS benchmarks.
+### Security significance
 
-### 3.2 Windows — IT Hygiene / Software Inventory
+Security Configuration Assessment compares endpoint configuration against security policies and benchmarks. A low benchmark score indicates that a large number of configuration checks require review or remediation.
 
-The Windows agent's **IT Hygiene → Software → Packages** view was inspected.
+---
 
-Observed:
+## Evidence 02 — Windows IT Hygiene / Software Inventory
+
+**File:** `evidence/02-wazuh-windows-it-hygiene-packages.png`
+
+![Windows software inventory](evidence/02-wazuh-windows-it-hygiene-packages.png)
+
+### Observed
+
+The Windows endpoint was opened under:
+
+**IT Hygiene → Software → Packages**
+
+The dashboard showed:
 
 - **9 unique packages**
 - Package type: `win`
@@ -76,54 +80,67 @@ Observed:
 - `aws-cfn-bootstrap`
 - AWS Tools for Windows
 - Wazuh Agent
-- Notepad++ Team was visible in the vendor list
+- Notepad++ Team
 
-The lab question asking for the custom text editor installed on the Windows agent was answered:
+### Lab answer
 
-**Notepad++**
+**Custom text editor installed:** `Notepad++`
 
-### 3.3 Windows — Agent Details
+### Security significance
 
-The Windows endpoint page showed:
+Software inventory gives defenders visibility into what is installed on an endpoint. This information can then support vulnerability management and software hygiene.
 
-- Agent ID: `002`
-- Status: **Disconnected**
-- IP address: `10.82.99.206`
-- Wazuh version: `v4.14.3`
-- Operating system: **Microsoft Windows Server 2019 Datacenter 10.0.17763.1821**
-- Host name: `WIN-SERVER`
-- CPU: **AMD EPYC 7571**
-- Memory: **4 GB**
-- Cores: **2**
-- Cluster node: `node01`
+---
 
-The lab question asking for the status of the agents managed by this Wazuh instance was answered:
+## Evidence 03 — Windows Agent Details and System Inventory
 
-**Disconnected**
+**File:** `evidence/03-wazuh-windows-agent-overview.png`
 
-The CPU question was answered:
+![Windows agent details](evidence/03-wazuh-windows-agent-overview.png)
 
-**AMD EPYC 7571**
+### Observed
 
-### 3.4 Windows — CIS Benchmark
+| Field | Value |
+|---|---|
+| Agent ID | `002` |
+| Status | **Disconnected** |
+| IP address | `10.82.99.206` |
+| Wazuh version | `v4.14.3` |
+| Operating system | Microsoft Windows Server 2019 Datacenter 10.0.17763.1821 |
+| Host name | `WIN-SERVER` |
+| Cluster node | `node01` |
+| Cores | `2` |
+| Memory | `4 GB` |
+| CPU | **AMD EPYC 7571** |
 
-The Windows Configuration Assessment page showed:
+### Lab answers
 
-**CIS Microsoft Windows Server 2019 Benchmark v2.0.0**
+**Agent status:** `Disconnected`
 
-Observed results:
+**CPU:** `AMD EPYC 7571`
 
-- Passed: **85**
-- Failed: **262**
-- Not applicable: **0**
-- Score: **24%**
-- Total checks: **347**
+---
 
-This demonstrates how Wazuh can expose configuration weaknesses against a standardized CIS benchmark.
+## Evidence 04 — Wazuh Overview / Alert Summary
 
-### 3.5 Wazuh Overview
+**File:** `evidence/04-wazuh-overview-dashboard-disconnected-agents.png`
 
-The Wazuh overview dashboard was captured showing security monitoring categories including:
+![Wazuh overview dashboard](evidence/04-wazuh-overview-dashboard-disconnected-agents.png)
+
+### Observed dashboard state
+
+The supplied screenshot showed:
+
+| Category | Count |
+|---|---:|
+| Active agents | 0 |
+| Disconnected agents | 2 |
+| Critical severity | 0 |
+| High severity | 0 |
+| Medium severity | 15 |
+| Low severity | 1 |
+
+The dashboard also exposed modules such as:
 
 - Configuration Assessment
 - Malware Detection
@@ -136,69 +153,239 @@ The Wazuh overview dashboard was captured showing security monitoring categories
 - Docker
 - Amazon Web Services
 
-One captured dashboard state showed:
+> Dashboard counts are state-dependent. They describe the captured lab state and should not be interpreted as permanent values.
 
-- Active agents: `0`
-- Disconnected agents: `2`
-- Critical alerts: `0`
-- High alerts: `0`
-- Medium alerts: `15`
-- Low alerts: `1`
+---
 
-Another lab-provided environment screenshot showed a healthy state with two active agents and no disconnected agents. This demonstrates that dashboard values depend on the current lab state and should not be treated as permanent configuration.
+## Evidence 05 — Windows Server 2019 CIS Benchmark
 
-## 4. Answers Recorded
+**File:** `evidence/05-tryhackme-windows-benchmark.png`
 
-| Lab question | Answer |
+![Windows CIS benchmark](evidence/05-tryhackme-windows-benchmark.png)
+
+### Observed
+
+Policy:
+
+**CIS Microsoft Windows Server 2019 Benchmark v2.0.0**
+
+Results:
+
+| Metric | Result |
+|---|---:|
+| Passed | 85 |
+| Failed | 262 |
+| Not applicable | 0 |
+| Total checks | 347 |
+| Score | **24%** |
+
+### Security significance
+
+This demonstrates configuration auditing against a standardized Windows Server security benchmark. The high number of failed checks indicates that the captured system has substantial hardening opportunities.
+
+---
+
+## Evidence 06 — Completed TryHackMe Questions
+
+**File:** `evidence/06-tryhackme-windows-agent-questions.png`
+
+![Completed TryHackMe questions](evidence/06-tryhackme-windows-agent-questions.png)
+
+### Answers evidenced in the screenshot
+
+**Question:** What is the status of the agents managed by this Wazuh?
+
+**Answer:** `Disconnected`
+
+**Question:** What is the CPU field value?
+
+**Answer:** `AMD EPYC 7571`
+
+Both answers are visibly marked **Correct Answer** in the supplied screenshot.
+
+---
+
+## Evidence 07 — TryHackMe Virtual Environment Setup
+
+**File:** `evidence/07-tryhackme-lab-machine-setup.png`
+
+![TryHackMe lab machine](evidence/07-tryhackme-lab-machine-setup.png)
+
+### Observed
+
+The TryHackMe environment reported:
+
+**Your virtual environment has been set up**
+
+The lab machine was shown as **On**, with an option to open the machine in the browser.
+
+The screenshot also explains that the supplied environment is intentionally expected to show agents in a disconnected state.
+
+---
+
+## Evidence 08 — TryHackMe Room Progress
+
+**File:** `evidence/08-tryhackme-room-progress-42-percent.png`
+
+![TryHackMe Exploring Wazuh room](evidence/08-tryhackme-room-progress-42-percent.png)
+
+### Observed
+
+- Room: **Exploring Wazuh**
+- Progress: **42%**
+- Task 1: Introduction shown as completed
+- Active machine information available
+- Wazuh environment supplied by TryHackMe
+
+This screenshot establishes the lab context and progress at the time the evidence was collected.
+
+---
+
+## Evidence 09 — Wazuh Overview Dashboard
+
+**File:** `evidence/09-wazuh-overview-dashboard.png`
+
+![Wazuh overview dashboard](evidence/09-wazuh-overview-dashboard.png)
+
+### Observed
+
+This screenshot provides a second overview of the Wazuh security platform and its major capabilities.
+
+Visible areas include:
+
+### Endpoint Security
+
+- Configuration Assessment
+- Malware Detection
+- File Integrity Monitoring
+
+### Threat Intelligence
+
+- Threat Hunting
+- Vulnerability Detection
+- MITRE ATT&CK
+
+### Security Operations
+
+- IT Hygiene
+- PCI DSS
+
+### Cloud Security
+
+- Docker
+- Amazon Web Services
+
+This evidence is useful because it demonstrates the breadth of Wazuh beyond simple endpoint alerting.
+
+---
+
+# 4. Consolidated Lab Answers
+
+| Question | Answer |
 |---|---|
-| What custom text editor is installed? | **Notepad++** |
-| What is the Linux agent CIS Benchmark score? | **46%** |
-| What is the status of the managed agents in the captured state? | **Disconnected** |
+| What custom text editor is installed on the Windows agent? | **Notepad++** |
+| What is the CIS Benchmark score of the Linux agent? | **46%** |
+| What is the status of the agents managed by Wazuh in the captured state? | **Disconnected** |
 | What is the Windows agent CPU field value? | **AMD EPYC 7571** |
 
-## 5. What I Learned
+---
 
-### Wazuh Security Configuration Assessment
+# 5. Key Technical Concepts Learned
 
-SCA checks endpoint configuration against policy files. Wazuh ships with policies based on established benchmarks such as CIS. Results can be reviewed as passed, failed, or not applicable checks.
+## 5.1 Wazuh Agents
 
-### System / Software Inventory
+A Wazuh agent runs on a monitored endpoint and collects security-relevant information such as system events, inventory, configuration, and other telemetry.
 
-Wazuh's Syscollector collects endpoint inventory such as operating system, hardware, packages, network information, processes, users, services, and other system properties. This inventory is useful for asset visibility and vulnerability management.
+The agent sends collected information to the Wazuh management infrastructure for processing and visualization.
 
-### Vulnerability Detection
+## 5.2 Security Configuration Assessment
 
-Wazuh correlates software inventory from monitored endpoints with vulnerability intelligence to identify vulnerable software and generate findings. This makes software inventory an important input to vulnerability management.
+SCA evaluates endpoint configuration against defined security policies and benchmarks.
 
-### SOC / Blue-Team Relevance
+In this lab:
 
-The lab connects several common defensive security activities:
+- Ubuntu benchmark score: **46%**
+- Windows Server benchmark score: **24%**
 
-`Asset Visibility → Configuration Assessment → Vulnerability Detection → Security Monitoring → Investigation`
+The results demonstrate how configuration assessment can identify hardening gaps.
 
-## 6. Evidence
+## 5.3 IT Hygiene
 
-All screenshots supplied for this documentation are stored in the [`evidence/`](./evidence/) directory.
+IT Hygiene provides visibility into endpoint assets and installed software.
 
-### Evidence index
+In this lab, software inventory was used to identify **Notepad++** on the Windows endpoint.
 
-1. `01-wazuh-linux-sca-46-percent.png` — Linux CIS benchmark and 46% score
-2. `02-wazuh-windows-it-hygiene-packages.png` — Windows software/package inventory
-3. `03-wazuh-windows-agent-overview.png` — Windows endpoint details
-4. `04-wazuh-overview-dashboard-disconnected-agents.png` — Wazuh overview and alert summary
-5. `05-tryhackme-windows-benchmark.png` — Windows CIS benchmark results
-6. `06-tryhackme-windows-agent-questions.png` — Completed TryHackMe questions
-7. `07-tryhackme-lab-machine-setup.png` — Lab machine setup
-8. `08-tryhackme-room-progress-42-percent.png` — TryHackMe room progress
-9. `09-wazuh-overview-dashboard.png` — Wazuh overview dashboard
+## 5.4 Vulnerability Detection
 
-## 7. References
+Wazuh can use endpoint software inventory to identify applications and versions that may be affected by known vulnerabilities.
 
-- TryHackMe: [Exploring Wazuh](https://tryhackme.com/room/exploringwazuh)
-- Wazuh documentation: Security Configuration Assessment
-- Wazuh documentation: System Inventory
-- Wazuh documentation: Vulnerability Detection
+This creates a useful defensive workflow:
 
-## 8. Disclaimer
+`Asset Inventory → Software Identification → Vulnerability Identification → Remediation`
 
-This repository contains personal learning notes and screenshots from an authorized TryHackMe training environment. It is intended for cybersecurity education and portfolio documentation.
+## 5.5 Security Monitoring
+
+The Wazuh dashboard combines multiple security capabilities into a single interface, including:
+
+`Alerts + SCA + Vulnerabilities + File Integrity + Threat Hunting + Compliance + MITRE ATT&CK`
+
+This is relevant to SOC and blue-team workflows because analysts need centralized visibility across endpoints.
+
+---
+
+# 6. Skills Demonstrated
+
+This lab provided practical exposure to:
+
+- Wazuh dashboard navigation
+- Wazuh agent management
+- Endpoint system inventory
+- Software inventory
+- CIS benchmark interpretation
+- Security Configuration Assessment
+- Vulnerability Detection concepts
+- Security alert severity
+- IT Hygiene
+- Compliance/security modules
+- TryHackMe virtual lab environments
+- Evidence collection and technical documentation
+
+---
+
+# 7. Evidence Directory
+
+All supplied screenshots are preserved in the `evidence/` directory.
+
+```text
+evidence/
+├── 01-wazuh-linux-sca-46-percent.png
+├── 02-wazuh-windows-it-hygiene-packages.png
+├── 03-wazuh-windows-agent-overview.png
+├── 04-wazuh-overview-dashboard-disconnected-agents.png
+├── 05-tryhackme-windows-benchmark.png
+├── 06-tryhackme-windows-agent-questions.png
+├── 07-tryhackme-lab-machine-setup.png
+├── 08-tryhackme-room-progress-42-percent.png
+├── 09-wazuh-overview-dashboard.png
+└── README.md
+```
+
+Every screenshot is linked directly from this README so the repository can be reviewed without having to guess which screenshot supports which finding.
+
+---
+
+# 8. References
+
+- TryHackMe — Exploring Wazuh: https://tryhackme.com/room/exploringwazuh
+- Wazuh Documentation: https://documentation.wazuh.com/current/
+- Wazuh User Manual: https://documentation.wazuh.com/current/user-manual/
+- Wazuh official documentation repository: https://github.com/wazuh/wazuh-documentation
+
+---
+
+# 9. Disclaimer
+
+This documentation is for cybersecurity learning and portfolio purposes.
+
+The screenshots and observations were collected from an authorized TryHackMe training environment. No unauthorized systems were targeted.
+
