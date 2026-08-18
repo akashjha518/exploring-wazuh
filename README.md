@@ -333,7 +333,123 @@ This is relevant to SOC and blue-team workflows because analysts need centralize
 
 ---
 
-# 6. Skills Demonstrated
+
+# 9. Task 5 — Vulnerability Detection
+
+**Task:** Vulnerability Detection
+
+Task 5 demonstrates how Wazuh identifies vulnerable software installed on monitored endpoints and associates affected packages with CVE identifiers and severity ratings.
+
+## Evidence 10 — Task 5 Questions and Explanation
+
+**File:** `evidence/10-task5-vulnerability-detection-answers.png`
+
+![Task 5 vulnerability detection answers](evidence/10-task5-vulnerability-detection-answers.png)
+
+The TryHackMe task explains that Wazuh's Vulnerability Detection module periodically scans agents for vulnerable applications. Results can be filtered by timestamp, CVE number, package, or description. The Linux example uses the package filter `package.name = linux-aws`.
+
+### Vulnerability Detection workflow
+
+`Agent Inventory → Installed Package → Vulnerability Detection → CVE → Severity → Remediation`
+
+### Task 5 answers
+
+| Question | Answer | Evidence |
+|---|---|---|
+| Latest Notepad++ vulnerability on the Windows agent | **CVE-2026-25926** | Evidence 12 |
+| Earliest critical vulnerability on the Linux agent | **CVE-2021-3773** | Evidence 11 |
+
+Both answers are visibly marked **Correct Answer** in the TryHackMe evidence.
+
+## Evidence 11 — Linux Critical Vulnerabilities
+
+**File:** `evidence/11-linux-critical-vulnerabilities.png`
+
+![Linux critical vulnerabilities](evidence/11-linux-critical-vulnerabilities.png)
+
+The Linux agent inventory was filtered for critical vulnerabilities.
+
+Observed:
+
+- Agent: `linux-server`
+- Agent ID: `003`
+- Package: `linux-aws`
+- Package version: `6.17.0-1007.7~24.04.1`
+- **3 hits**
+- All displayed vulnerabilities are **Critical**
+
+Visible CVEs:
+
+| CVE | Severity | Package |
+|---|---|---|
+| CVE-2024-56180 | Critical | linux-aws |
+| CVE-2025-27558 | Critical | linux-aws |
+| **CVE-2021-3773** | **Critical** | linux-aws |
+
+### Finding
+
+The earliest critical CVE visible in the filtered results is **CVE-2021-3773**.
+
+## Evidence 12 — Windows Notepad++ Vulnerabilities
+
+**File:** `evidence/12-windows-notepad-vulnerabilities.png`
+
+![Windows Notepad++ vulnerabilities](evidence/12-windows-notepad-vulnerabilities.png)
+
+The Windows agent was filtered using:
+
+- Agent ID: `002`
+- Package: `Notepad++ (64-bit x64)`
+- Severity: **High**
+- Evaluation state: Evaluated
+
+Observed:
+
+- **4 hits**
+- Package version: `8.4`
+- All four displayed vulnerabilities are **High**
+
+Visible CVEs:
+
+| CVE | Severity | Package version |
+|---|---|---|
+| CVE-2025-15556 | High | 8.4 |
+| CVE-2023-40031 | High | 8.4 |
+| CVE-2022-32168 | High | 8.4 |
+| **CVE-2026-25926** | **High** | 8.4 |
+
+### Finding
+
+The latest Notepad++ vulnerability shown in the Wazuh results is **CVE-2026-25926**.
+
+This demonstrates why software inventory is important for vulnerability management: Wazuh can associate an installed package/version with known vulnerabilities and severity.
+
+## Evidence 13 — Task 5 Completed / Room Progress
+
+**File:** `evidence/13-task5-completed-and-room-progress-57-percent.png`
+
+![Task 5 completed](evidence/13-task5-completed-and-room-progress-57-percent.png)
+
+The screenshot shows:
+
+- **Task 5 — Vulnerability Detection** marked complete
+- `CVE-2026-25926` accepted as the latest Notepad++ vulnerability
+- `CVE-2021-3773` accepted as the earliest critical Linux vulnerability
+- Room progress increased to **57%**
+- Tasks 6–9 remain visible: Logging and Reporting, Custom Log Collection, Unique Wazuh Features, and Conclusion
+
+## Task 5 — Consolidated Findings
+
+| Endpoint | Package | Version | Vulnerabilities observed | Key result |
+|---|---|---|---:|---|
+| Windows `WIN-SERVER` / Agent `002` | Notepad++ (64-bit x64) | 8.4 | 4 High | Latest: **CVE-2026-25926** |
+| Linux `linux-server` / Agent `003` | linux-aws | 6.17.0-1007.7~24.04.1 | 3 Critical | Earliest: **CVE-2021-3773** |
+
+### Practical takeaway
+
+Task 5 demonstrates an important SOC workflow: knowing which software is installed is not enough. Analysts also need to determine whether installed versions are associated with known vulnerabilities, identify the relevant CVEs, understand severity, and prioritize remediation.
+
+# 10. Skills Demonstrated
 
 This lab provided practical exposure to:
 
@@ -352,7 +468,7 @@ This lab provided practical exposure to:
 
 ---
 
-# 7. Evidence Directory
+# 11. Evidence Directory
 
 All supplied screenshots are preserved in the `evidence/` directory.
 
@@ -367,6 +483,10 @@ evidence/
 ├── 07-tryhackme-lab-machine-setup.png
 ├── 08-tryhackme-room-progress-42-percent.png
 ├── 09-wazuh-overview-dashboard.png
+├── 10-task5-vulnerability-detection-answers.png
+├── 11-linux-critical-vulnerabilities.png
+├── 12-windows-notepad-vulnerabilities.png
+├── 13-task5-completed-and-room-progress-57-percent.png
 └── README.md
 ```
 
@@ -374,7 +494,7 @@ Every screenshot is linked directly from this README so the repository can be re
 
 ---
 
-# 8. References
+# 12. References
 
 - TryHackMe — Exploring Wazuh: https://tryhackme.com/room/exploringwazuh
 - Wazuh Documentation: https://documentation.wazuh.com/current/
@@ -383,7 +503,7 @@ Every screenshot is linked directly from this README so the repository can be re
 
 ---
 
-# 9. Disclaimer
+# 13. Disclaimer
 
 This documentation is for cybersecurity learning and portfolio purposes.
 

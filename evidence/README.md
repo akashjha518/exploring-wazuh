@@ -1,6 +1,6 @@
 # Evidence — Exploring Wazuh
 
-This directory contains **all 9 screenshots supplied for the lab documentation**.
+This directory contains all screenshots supplied for the lab documentation.
 
 | # | Evidence | Purpose |
 |---|---|---|
@@ -13,5 +13,9 @@ This directory contains **all 9 screenshots supplied for the lab documentation**
 | 07 | Lab Setup | TryHackMe virtual environment |
 | 08 | Room Progress | Exploring Wazuh room at 42% |
 | 09 | Wazuh Overview | Wazuh capability/module overview |
+| 10 | Task 5 | Vulnerability Detection explanation and accepted answers |
+| 11 | Linux Vulnerabilities | Three critical linux-aws CVEs, including CVE-2021-3773 |
+| 12 | Windows Vulnerabilities | Four Notepad++ CVEs, including CVE-2026-25926 |
+| 13 | Task 5 Completion | Task 5 completed and room progress at 57% |
 
-The parent `README.md` embeds every screenshot and explains what each item demonstrates.
+The parent `README.md` embeds and explains every screenshot.
